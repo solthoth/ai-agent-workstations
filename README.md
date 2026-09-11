@@ -54,3 +54,17 @@ limactl start \
   --name agent-dev \
   ./lima/agent-dev.yaml
 ```
+
+Because of docker modifies group memberships, you will need to exit your logged in session in order to work with docker without using `sudo`.
+
+```zsh
+limactl stop agent-dev
+limactl start agent-dev
+limactl shell agent-dev
+```
+
+You can test if docker works fine by running
+
+```zsh
+docker run --rm hello-world
+```

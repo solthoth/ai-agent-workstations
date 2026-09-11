@@ -4,6 +4,10 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+BOOTSTRAP_VERSION="0.1.0"
+
+echo "Agent development machine bootstrap ${BOOTSTRAP_VERSION}"
+
 echo "Starting agent development machine bootstrap..."
 
 "${SCRIPT_DIR}/00-base.sh"
