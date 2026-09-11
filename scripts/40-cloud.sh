@@ -150,5 +150,5 @@ echo "Cloud tooling installed:"
 
 gh --version | head -n 1
 az version --output table
-terraform version
+# terraform version
 tofu version
