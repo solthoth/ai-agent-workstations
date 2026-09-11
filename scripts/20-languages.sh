@@ -15,15 +15,24 @@ else
   echo "mise already installed."
 fi
 
-# Make mise available to this script immediately.
 export PATH="${HOME}/.local/bin:${PATH}"
 
-# Ensure mise activates in future bash sessions.
+#
+# Configure future interactive shells.
+#
+
 if ! grep -q 'mise activate bash' "${HOME}/.bashrc"; then
   echo 'eval "$(~/.local/bin/mise activate bash)"' >> "${HOME}/.bashrc"
 fi
 
-echo "Installing default runtimes..."
+#
+# Activate mise NOW for this provisioning shell.
+#
+
+eval "$("${MISE_BIN}" activate bash)"
+
+echo "mise version:"
+mise --version
 
 mise use --global go@latest
 mise use --global node@lts
@@ -32,11 +41,16 @@ mise use --global age@latest
 mise use --global sops@latest
 
 echo
-echo "Installed runtimes:"
-mise current
+echo "Currently selected runtimes:"
+mise ls --current
 
 echo
-go version
-node --version
-npm --version
-python --version
+echo "Runtime versions:"
+
+mise exec -- go version
+mise exec -- node --version
+mise exec -- npm --version
+mise exec -- python --version
+
+echo
+echo "Language/runtime installation complete."
