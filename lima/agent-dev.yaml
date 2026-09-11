@@ -1,0 +1,95 @@
+# lima/agent-dev.yaml
+
+# Use Apple's native Virtualization.framework.
+vmType: "vz"
+
+# Native architecture for Apple Silicon.
+arch: "aarch64"
+
+# Resource allocation.
+# Your Mac has 18 GB RAM, so 8 GB gives the VM plenty of room
+# while leaving macOS comfortable.
+cpus: 6
+memory: "8GiB"
+disk: "100GiB"
+
+# Explicitly use Ubuntu.
+# Lima's default image is Ubuntu, but declaring the base makes
+# the intent of this workstation configuration clearer.
+base:
+  - template:_images/ubuntu
+
+# Critical security decision:
+# expose NO macOS filesystem paths to the VM.
+#
+# Source code should be cloned directly into ~/src inside the VM.
+mounts: []
+
+# Use Lima's normal SSH access.
+ssh:
+  loadDotSSHPubKeys: false
+
+# Automatically forward services bound inside the VM back to localhost.
+#
+# This lets you run things like:
+#   localhost:3000  React / Node
+#   localhost:8080  Go / APIs
+#   localhost:5432  PostgreSQL
+# without exposing them to your LAN.
+portForwards:
+  - guestPort: 3000
+    hostPort: 3000
+
+  - guestPort: 8080
+    hostPort: 8080
+
+  - guestPort: 5173
+    hostPort: 5173
+
+  - guestPort: 5432
+    hostPort: 5432
+
+# Initial machine bootstrap.
+#
+# Keep this minimal. Bigger installation logic should live
+# in version-controlled shell scripts.
+provision:
+  - mode: system
+    script: |
+      #!/usr/bin/env bash
+      set -euxo pipefail
+
+      export DEBIAN_FRONTEND=noninteractive
+
+      apt-get update
+
+      apt-get install -y \
+        ca-certificates \
+        curl \
+        git 
+
+      apt-get clean
+      rm -rf /var/lib/apt/lists/*
+
+  - mode: user
+    script: |
+      #!/usr/bin/env bash
+      set -euxo pipefail
+
+      BOOTSTRAP_REPO="https://github.com/YOUR-USER/ai-development-machine.git"
+      BOOTSTRAP_DIR="${HOME}/bootstrap"
+
+      if [ ! -d "${BOOTSTRAP_DIR}/.git" ]; then
+        git clone "${BOOTSTRAP_REPO}" "${BOOTSTRAP_DIR}"
+      else
+        git -C "${BOOTSTRAP_DIR}" pull --ff-only
+      fi
+
+      chmod +x "${BOOTSTRAP_DIR}/scripts/"*.sh
+
+      "${BOOTSTRAP_DIR}/scripts/bootstrap.sh"
+
+# Helpful environment variables available inside the guest.
+env:
+  EDITOR: vim
+  VISUAL: vim

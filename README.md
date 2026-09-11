@@ -35,3 +35,22 @@ limactl list
 # Connect to running instance
 limactl shell agent-dev
 ```
+
+When you are done having fun, stop and clean up your instance as needed
+
+```zsh
+# Stop the running VM
+limactl stop agent-dev
+# Delete the VM instance
+limactl delete agent-dev
+```
+
+#### Using Configuration Files
+
+In order to create and run a VM based on a config execute with the appropriate config file.
+
+```zsh
+limactl start \
+  --name agent-dev \
+  ./lima/agent-dev.yaml
+```
