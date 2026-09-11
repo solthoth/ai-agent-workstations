@@ -76,7 +76,7 @@ provision:
       #!/usr/bin/env bash
       set -euxo pipefail
 
-      BOOTSTRAP_REPO="https://github.com/YOUR-USER/ai-development-machine.git"
+      BOOTSTRAP_REPO="https://github.com/solthoth/ai-agent-workstations.git"
       BOOTSTRAP_DIR="${HOME}/bootstrap"
 
       if [ ! -d "${BOOTSTRAP_DIR}/.git" ]; then
