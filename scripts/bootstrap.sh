@@ -3,8 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-BOOTSTRAP_VERSION="0.2.0"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+BOOTSTRAP_VERSION="$(cat "${REPO_ROOT}/VERSION")"
 
 echo "Agent development machine bootstrap ${BOOTSTRAP_VERSION}"
 
