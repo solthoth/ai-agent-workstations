@@ -34,6 +34,7 @@ ssh:
 # This lets you run things like:
 #   localhost:3000  React / Node
 #   localhost:8080  Go / APIs
+#   localhost:7242  J5 Agent Fleet local UI
 #   localhost:5432  PostgreSQL
 # without exposing them to your LAN.
 portForwards:
@@ -45,6 +46,9 @@ portForwards:
 
   - guestPort: 5173
     hostPort: 5173
+
+  - guestPort: 7242
+    hostPort: 7242
 
   - guestPort: 5432
     hostPort: 5432
