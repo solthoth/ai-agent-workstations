@@ -68,3 +68,16 @@ You can test if docker works fine by running
 ```zsh
 docker run --rm hello-world
 ```
+
+#### J5 Agent Fleet local UI
+
+The configuration forwards the J5 Agent Fleet runner's local status and
+Controls UI from the guest to the Mac host. After installing the runner inside
+the VM, open [http://localhost:7242](http://localhost:7242) on the Mac.
+
+The runner itself does not require this inbound port to connect to J5 Agent
+Fleet. The forwarding is only for accessing its local UI from outside the VM.
+
+For an `agent-dev` instance created before this port was added, stop the VM and
+run `limactl edit agent-dev`. Add the `guestPort: 7242` / `hostPort: 7242`
+mapping under `portForwards`, save, and start the VM again.
